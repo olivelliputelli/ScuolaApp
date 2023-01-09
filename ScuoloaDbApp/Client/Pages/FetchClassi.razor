@@ -1,0 +1,92 @@
+﻿@page "/fetchclassi"
+@using ScuoloaDbApp.Shared
+@inject HttpClient Http
+
+<EditForm Model="@classe" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    Classe: <InputText disabled="@(!IsAdd)" @bind-Value="classe.Sigla" />
+    Ubicazione: <InputText @bind-Value="classe.Ubicazione" />
+    Note: <InputText @bind-Value="classe.Note" />
+    @if (IsAdd)
+    {
+        <button class="btn btn-primary" type="submit">Aggiungi classe</button>
+    }
+    else
+    {
+        <button class="btn btn-secondary" type="submit">Salva modifiche</button>
+    }
+</EditForm>
+
+
+@if (classi == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sigla classe</th>
+                <th>Ubicazione</th>
+                <th>Note</th>
+                <th>Operazioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in classi)
+            {
+                <tr>
+                    <td>@item.Sigla</td>
+                    <td>@item.Ubicazione</td>
+                    <td>@item.Note</td>
+                    <td><button class="btn btn-warning" @onclick="() => UpdateClasse(item.Sigla)">Modifica</button> </td>
+                    <td><button class="btn btn-danger" @onclick="() => DeleteClasseAsync(item.Sigla)">Elimina</button> </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private bool IsAdd = true;
+    private Classe classe = new();
+    private Classe[]? classi;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadClassiAsync();
+    }
+
+    private async void HandleValidSubmit()
+    {
+        if (IsAdd)
+            await Http.PostAsJsonAsync<Classe>("api/classi", classe);
+        else
+            await Http.PutAsJsonAsync<Classe>($"api/classi/{classe.Sigla}", classe);
+        classe = new();
+        IsAdd = true;
+        await LoadClassiAsync();
+        StateHasChanged();
+    }
+
+    private async void DeleteClasseAsync(string sigla)
+    {
+        await Http.DeleteAsync($"api/classi/{sigla}");
+        await LoadClassiAsync();
+        StateHasChanged();
+    }
+
+    private async Task UpdateClasse(string sigla)
+    {
+        IsAdd = false;
+        classe = await Http.GetFromJsonAsync<Classe>($"api/classi/{sigla}");
+        StateHasChanged();
+    }
+
+    private async Task LoadClassiAsync()
+    {
+        classi = await Http.GetFromJsonAsync<Classe[]>("api/classi");
+    }
+}

@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using ScuoloaDbApp.Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlServer("Server=MSI\\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Database=Scuola_2022Db;Trusted_Connection=True;"));
 
-builder.Services.AddControllersWithViews();
+// builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -28,16 +26,19 @@ else
 app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
+//app.UseStaticFiles();
 
 app.MapGet("api/cs", async (Scuola2022dbContext db) =>
     await db.ClassiStudenti.ToListAsync());
 
-app.UseRouting();
+app.MapGet("api/classi", async (Scuola2022dbContext db) =>
+    await db.Classi.ToListAsync());
+
+//app.UseRouting();
 
 app.MapRazorPages();
 
-app.MapControllers();
+// app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
