@@ -30,18 +30,12 @@ app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
-app.MapGet("api/saluti", () => "Ciao Mondo!");
-
 app.MapGet("api/cs", async (Scuola2022dbContext db) =>
     await db.ClassiStudenti.ToListAsync());
 
-
 app.UseRouting();
 
-
 app.MapRazorPages();
-
-
 
 app.MapControllers();
 app.MapFallbackToFile("index.html");
