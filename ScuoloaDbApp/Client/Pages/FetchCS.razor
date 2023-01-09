@@ -1,0 +1,41 @@
+﻿@page "/fetchcs"
+@using ScuoloaDbApp.Shared
+@inject HttpClient Http
+
+<PageTitle>CS</PageTitle>
+
+<h1>Classi Studenti</h1>
+
+@if (classiStudenti == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Classe</th>
+                <th># Studenti</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in classiStudenti)
+            {
+                <tr>
+                    <td>@item.Sigla</td>
+                    <td>@item.NumeroStudenti</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private ClassiStudenti[]? classiStudenti;
+
+    protected override async Task OnInitializedAsync()
+    {
+        classiStudenti = await Http.GetFromJsonAsync<ClassiStudenti[]>("api/cs");
+    }
+}
