@@ -2,10 +2,6 @@
 @using ScuoloaDbApp.Shared
 @inject HttpClient Http
 
-<PageTitle>Classi Studenti</PageTitle>
-
-<h1>Classi Studenti</h1>
-
 @if (classiStudenti == null)
 {
     <p><em>Loading...</em></p>
@@ -16,14 +12,18 @@ else
         <thead>
             <tr>
                 <th>Classe</th>
-                <th># Studenti</th>
+                <td>Ubicazione</td>
+                <td>Note</td>
+                <th>Numero Studenti</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in classiStudenti)
             {
                 <tr>
-                    <td>@item.Sigla</td>
+                    <th>@item.Sigla</th>
+                    <td>@item.Ubicazione</td>
+                    <td>@item.Note</td>
                     <td>@item.NumeroStudenti</td>
                 </tr>
             }

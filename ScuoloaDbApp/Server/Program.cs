@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ScuoloaDbApp.Server.Data;
+using ScuoloaDbApp.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,13 +27,61 @@ else
 app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
-//app.UseStaticFiles();
+app.UseStaticFiles();
 
+// Lista delle classi (tutte le informazioni della classe)
+// con il numero degli studenti per ogni classe;
 app.MapGet("api/cs", async (Scuola2022dbContext db) =>
     await db.ClassiStudenti.ToListAsync());
 
+// CRUD tabella Classi
 app.MapGet("api/classi", async (Scuola2022dbContext db) =>
     await db.Classi.ToListAsync());
+
+app.MapGet("api/classi/{id}", async (string id, Scuola2022dbContext db) =>
+{
+    Classe? classe = await db.Classi.FindAsync(id);
+    if (classe is not null)
+        return Results.Ok(classe);
+    else
+        return Results.NotFound();
+});
+
+
+app.MapPost("api/classi", async (Classe classe, Scuola2022dbContext db) =>
+{
+    db.Classi.Add(classe);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"api/classi/{classe.Sigla}", classe);
+});
+
+app.MapPut("api/classi/{id}", async (string id, Classe inputClasse, Scuola2022dbContext db) =>
+{
+    var classe = await db.Classi.FindAsync(id);
+
+    if (classe is null) return Results.NotFound();
+
+    classe.Sigla = inputClasse.Sigla;
+    classe.Ubicazione = inputClasse.Ubicazione;
+    classe.Note = inputClasse.Note;
+
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+app.MapDelete("api/classi/{id}", async (string id, Scuola2022dbContext db) =>
+{
+    if (await db.Classi.FindAsync(id) is Classe classe)
+    {
+        db.Classi.Remove(classe);
+        await db.SaveChangesAsync();
+        return Results.Ok(classe);
+    }
+
+    return Results.NotFound();
+});
 
 //app.UseRouting();
 
