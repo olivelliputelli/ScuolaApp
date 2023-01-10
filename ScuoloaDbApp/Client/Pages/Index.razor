@@ -1,8 +1,25 @@
 ﻿@page "/"
+@using ScuoloaDbApp.Shared
+@inject HttpClient Http
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Scuola Db</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Statistiche</h1>
 
-Welcome to your new app.
+<div class="alert alert-primary" role="alert">
+  Numero studenti: @studenti?.Count()
+</div>
+<div class="alert alert-secondary" role="alert">
+    Numero classi: @classi?.Count()
+</div>
 
+@code{
+    private Classe[]? classi;
+    private Studente[]? studenti;
+
+    protected override async Task OnInitializedAsync()
+    {
+        classi = await Http.GetFromJsonAsync<Classe[]>("api/classi");
+       // studenti = await Http.GetFromJsonAsync<Studente[]>("api/studenti");
+    }
+}

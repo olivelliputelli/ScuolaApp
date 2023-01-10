@@ -41,8 +41,8 @@ else
                     <td>@item.Sigla</td>
                     <td>@item.Ubicazione</td>
                     <td>@item.Note</td>
-                    <td><button class="btn btn-warning" @onclick="() => UpdateClasse(item.Sigla)">Modifica</button> </td>
-                    <td><button class="btn btn-danger" @onclick="() => DeleteClasseAsync(item.Sigla)">Elimina</button> </td>
+                    <td><button class="btn btn-warning" @onclick="() => UpdateClasse(item.Sigla)">Modifica</button>
+                    <button class="btn btn-danger" @onclick="() => DeleteClasseAsync(item.Sigla)">Elimina</button> </td>
                 </tr>
             }
         </tbody>
@@ -51,7 +51,7 @@ else
 
 @code {
     private bool IsAdd = true;
-    private Classe classe = new();
+    private Classe? classe = new();
     private Classe[]? classi;
 
     protected override async Task OnInitializedAsync()

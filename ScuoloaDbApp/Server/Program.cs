@@ -47,7 +47,6 @@ app.MapGet("api/classi/{id}", async (string id, Scuola2022dbContext db) =>
         return Results.NotFound();
 });
 
-
 app.MapPost("api/classi", async (Classe classe, Scuola2022dbContext db) =>
 {
     db.Classi.Add(classe);
@@ -73,7 +72,8 @@ app.MapPut("api/classi/{id}", async (string id, Classe inputClasse, Scuola2022db
 
 app.MapDelete("api/classi/{id}", async (string id, Scuola2022dbContext db) =>
 {
-    if (await db.Classi.FindAsync(id) is Classe classe)
+    var classe = await db.Classi.FindAsync(id);
+    if (classe is not null)
     {
         db.Classi.Remove(classe);
         await db.SaveChangesAsync();
@@ -82,6 +82,10 @@ app.MapDelete("api/classi/{id}", async (string id, Scuola2022dbContext db) =>
 
     return Results.NotFound();
 });
+
+// CRUD tabella Studenti
+app.MapGet("api/studenti", (Scuola2022dbContext db) =>
+    db.Studenti.ToListAsync<Studente>());
 
 //app.UseRouting();
 

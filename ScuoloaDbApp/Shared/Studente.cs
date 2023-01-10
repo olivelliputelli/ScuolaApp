@@ -2,7 +2,7 @@
 
 namespace ScuoloaDbApp.Shared;
 
-public partial class Studente
+public class Studente
 {
     [Key]
     public int Matricola { get; set; }
@@ -21,11 +21,9 @@ public partial class Studente
 
     [StringLength(255)]
     public string? Email { get; set; }
-
     public bool Diplomato { get; set; }
 
-    [StringLength(5)]
     public string SiglaClasse { get; set; } = null!;
 
-    public virtual Classe SiglaClasseNavigation { get; set; } = null!;
+    // public virtual Classe SiglaClasseNavigation { get; set; } = null!;
 }
