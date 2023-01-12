@@ -2,24 +2,20 @@
 @using ScuoloaDbApp.Shared
 @inject HttpClient Http
 
-<PageTitle>Scuola Db</PageTitle>
-
-<h1>Statistiche</h1>
-
-@*<div class="alert alert-primary" role="alert">
+<p>
   Numero studenti: @studenti?.Count()
-</div>*@
+</p>
 <div class="alert alert-secondary" role="alert">
     Numero classi: @classi?.Count()
 </div>
 
 @code{
     private Classe[]? classi;
-  //  private Studente[]? studenti;
+    private Studente[]? studenti;
 
     protected override async Task OnInitializedAsync()
     {
         classi = await Http.GetFromJsonAsync<Classe[]>("api/classi");
-       // studenti = await Http.GetFromJsonAsync<Studente[]>("api/studenti");
+        studenti = await Http.GetFromJsonAsync<Studente[]>("api/studenti");
     }
 }

@@ -8,27 +8,14 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Classe</th>
-                <td>Ubicazione</td>
-                <td>Note</td>
-                <th>Numero Studenti</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in classiStudenti)
-            {
-                <tr>
-                    <th>@item.Sigla</th>
-                    <td>@item.Ubicazione</td>
-                    <td>@item.Note</td>
-                    <td>@item.NumeroStudenti</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <ul>
+    @foreach (var item in classiStudenti)
+    {
+        <li>
+            @item.Sigla : @item.NumeroStudenti
+        </li>
+    }
+</ul>
 }
 
 @code {
