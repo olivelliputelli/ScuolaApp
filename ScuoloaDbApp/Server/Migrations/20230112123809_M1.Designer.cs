@@ -11,7 +11,7 @@ using ScuoloaDbApp.Server.Data;
 namespace ScuoloaDbApp.Server.Migrations
 {
     [DbContext(typeof(Scuola2022dbContext))]
-    [Migration("20230112111929_M1")]
+    [Migration("20230112123809_M1")]
     partial class M1
     {
         /// <inheritdoc />

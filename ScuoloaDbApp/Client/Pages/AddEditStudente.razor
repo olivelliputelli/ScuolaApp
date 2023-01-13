@@ -1,0 +1,56 @@
+﻿@page "/addeditstudente"
+@using ScuoloaDbApp.Shared
+@inject HttpClient Http
+
+<EditForm Model="@studente" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    Cognome: <InputText @bind-Value="studente.Cognome" />
+    Nome: <InputText @bind-Value="studente.Nome" />
+    Classe:
+    <InputSelect @bind-Value="studente.ClasseSigla">
+        @if (classi == null)
+        {
+            <option value="">Loading..</option>
+        }
+        else
+        {
+            @foreach (var classe in classi)
+            {
+                <option value="@classe.Sigla">@classe.Sigla - @classe.Ubicazione</option>
+            }
+        }
+    </InputSelect>
+    @if (IsAdd)
+    {
+        <button class="btn btn-primary" type="submit">Aggiungi classe</button>
+    }
+    else
+    {
+        <button class="btn btn-secondary" type="submit">Salva modifiche</button>
+    }
+</EditForm>
+
+@code {
+    private bool IsAdd = true;
+    private Studente? studente = new();
+
+    private Classe[]? classi;
+
+    protected override async Task OnInitializedAsync()
+    {
+        classi = await Http.GetFromJsonAsync<Classe[]>("api/classi");
+    }
+
+    private async void HandleValidSubmit()
+    {
+        //if (IsAdd)
+        //    await Http.PostAsJsonAsync<Classe>("api/classi", classe);
+        //else
+        //    await Http.PutAsJsonAsync<Classe>($"api/classi/{classe.Sigla}", classe);
+        //classe = new();
+        //IsAdd = true;
+        //await LoadClassiAsync();
+        //StateHasChanged();
+    }
+}

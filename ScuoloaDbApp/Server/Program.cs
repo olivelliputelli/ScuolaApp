@@ -5,8 +5,8 @@ using ScuoloaDbApp.Shared;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlite("Data Source=ScuolaDb.db"));
-// builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlServer("Server=MSI\\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Database=Scuola_2022Db;Trusted_Connection=True;"));
+//builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlite("Data Source=ScuolaDb.db"));
+builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlServer("Server=MSI\\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Database=Scuola_2022Db;Trusted_Connection=True;"));
 
 // builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -34,6 +34,9 @@ app.UseStaticFiles();
 // con il numero degli studenti per ogni classe;
 app.MapGet("api/cs", async (Scuola2022dbContext db) =>
     await db.ClassiStudenti.ToListAsync());
+
+app.MapGet("api/cs1", async (Scuola2022dbContext db) =>
+    await db.Classi.Include(c => c.Studenti).ToListAsync());
 
 // CRUD tabella Classi
 app.MapGet("api/classi", async (Scuola2022dbContext db) =>
@@ -86,7 +89,7 @@ app.MapDelete("api/classi/{id}", async (string id, Scuola2022dbContext db) =>
 
 // CRUD tabella Studenti
 app.MapGet("api/studenti", (Scuola2022dbContext db) =>
-    db.Studenti.ToListAsync<Studente>());
+    db.Studenti.ToListAsync());
 
 //app.UseRouting();
 

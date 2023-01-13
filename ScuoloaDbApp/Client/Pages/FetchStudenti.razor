@@ -1,0 +1,75 @@
+﻿@page "/fetchstudenti"
+@using ScuoloaDbApp.Shared
+@inject NavigationManager Navigation
+@inject HttpClient Http
+
+@if (studenti == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Matricola</th>
+                <th>Cognome</th>
+                <th>Nome</th>
+                <th>Classe</th>
+                <th>Operazioni
+
+                    <button class="btn btn-primary" @onclick="AddEditS" > + </button>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in studenti)
+            {
+                <tr>
+                    <td>@item.Matricola</td>
+                    <td>@item.Cognome</td>
+                    <td>@item.Nome</td>
+                    <td>@item.ClasseSigla</td>
+                    <td></td>
+               @*     <td><button class="btn btn-warning" @onclick="() => UpdateClasse(item.Matricola)">Modifica</button>
+                    <button class="btn btn-danger" @onclick="() => DeleteStudenteAsync(item.Matricola)">Elimina</button> </td>
+              *@  </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Studente[]? studenti;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStudentiAsync();
+    }
+
+
+    private async void DeleteStudenteAsync(string sigla)
+    {
+        //await Http.DeleteAsync($"api/classi/{sigla}");
+        //await LoadStudentiAsync();
+        //StateHasChanged();
+    }
+
+    private async Task UpdateClasse(string sigla)
+    {
+        //IsAdd = false;
+        //classe = await Http.GetFromJsonAsync<Classe>($"api/classi/{sigla}");
+        //StateHasChanged();
+    }
+
+    private void AddEditS()
+    {
+        Navigation.NavigateTo("addeditstudente");
+    }
+
+    private async Task LoadStudentiAsync()
+    {
+        studenti = await Http.GetFromJsonAsync<Studente[]>("api/studenti");
+    }
+}
