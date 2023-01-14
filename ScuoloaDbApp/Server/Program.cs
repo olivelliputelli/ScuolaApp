@@ -5,8 +5,17 @@ using ScuoloaDbApp.Shared;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlite("Data Source=ScuolaDb.db"));
-builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlServer("Server=MSI\\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Database=Scuola_2022Db;Trusted_Connection=True;"));
+
+// Per usare SqlLite deselezionare il commento e commentare l'altyro.
+// poi: 
+// add-migration M1
+// update-database
+// builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlite("Data Source=ScuolaDb.db"));
+
+builder.Services.AddDbContext<Scuola2022dbContext>(opt => 
+opt.UseSqlServer("\"Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=Scuola_2022Db"));
+
+// builder.Services.AddDbContext<Scuola2022dbContext>(opt => opt.UseSqlServer("Server=MSI\\SQLEXPRESS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Database=Scuola_2022Db;Trusted_Connection=True;"));
 
 // builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

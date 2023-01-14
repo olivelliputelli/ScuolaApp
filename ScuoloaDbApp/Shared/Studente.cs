@@ -6,6 +6,7 @@ public class Studente
 {
     [Key]
     public int Matricola { get; set; }
+    [Required]
     public string Cognome { get; set; } = null!;
     public string Nome { get; set; } = null!;
     public string? Indirizzo { get; set; }

@@ -10,4 +10,5 @@ public partial class Scuola2022dbContext : DbContext
     public DbSet<Classe> Classi { get; set; }
     public DbSet<ClassiStudenti> ClassiStudenti { get; set; }
     public DbSet<Studente> Studenti { get; set; }
+
 }

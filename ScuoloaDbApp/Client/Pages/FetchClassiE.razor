@@ -1,0 +1,19 @@
+﻿@page "/fetchclassie"
+@using ScuoloaDbApp.Shared
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject HttpClient Http
+@*
+<QuickGrid Items="@classi">
+    <PropertyColumn Property="@(p => p.Sigla)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.Ubicazione)" Sortable="true" />
+
+</QuickGrid>*@
+
+@code {
+    private Classe[] classi;
+    protected override async Task OnInitializedAsync()
+    {
+        classi = await Http.GetFromJsonAsync<Classe[]>("api/classi"); 
+    }
+    
+}
